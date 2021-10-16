@@ -1,6 +1,11 @@
 # import pybullet_data as pd
 
 # pd.getDataPath()
+print(pd.getDataPath())  # move to this path
+"""
+or do something like this
+rob1 = p.loadURDF(pd.getDataPath() + "/cartpole.urdf")
+"""
 
 # more starter.py (run starter.py)
 
