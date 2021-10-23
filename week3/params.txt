@@ -1,4 +1,4 @@
-
+17 parameters
 
 link:
 
@@ -27,4 +27,6 @@ control:
 14 control-waveform: sine/pulse/ramp
 15 control-amp: 0-0.25
 16 control-freq: 0-1
+
+
 
