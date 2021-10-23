@@ -1,7 +1,9 @@
 # 3.203 Generate a genome
 # 3.204 Genome spec
+# 3.208 Gene to graph - implementation
 
 import numpy as np
+import copy
 
 class Genome():
   @staticmethod
@@ -41,3 +43,22 @@ class Genome():
       ind = ind + 1
     return gene_spec
 
+  @staticmethod
+  def expandLinks(parent_link, uniq_parent_name, flat_links, exp_links):
+    children = [l for l in flat_links if l.parent_name == parent_link.name]
+    for c in children:
+      for r in range(c.recur):
+        c_copy = copy.copy(c)
+        c_copy.parent_name = uniq_parent_name
+        uniq_name = c_copy.name + str(len(exp_links))
+        c_copy.name = uniq_name
+        exp_links.append(c_copy)
+        Genome.expandLinks(c, uniq_name, flat_links, exp_links)
+
+
+
+class URDFLink():
+  def __init__(self, name, parent_name, recur):
+    self.name = name
+    self.parent_name = parent_name
+    self.recur = recur
