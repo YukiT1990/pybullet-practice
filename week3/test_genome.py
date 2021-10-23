@@ -1,4 +1,5 @@
 # 3.203 Generate a genome
+# 3.204 Genome spec
 
 import unittest
 import genome
@@ -17,7 +18,7 @@ class GenomeTest (unittest.TestCase):
 
   def testRandomGeneHasValues(self):
     gene = genome.Genome.get_random_gene(5)
-    print(gene)
+    # print(gene)
     self.assertIsNotNone(gene[0])
 
   def testRandomGeneLength(self):
@@ -30,11 +31,25 @@ class GenomeTest (unittest.TestCase):
 
   def testRandomGeneExists(self):
     data = genome.Genome.get_random_genome(20, 5)
-    print(data)
+    # print(data)
     self.assertIsNotNone(data)
 
   def testGeneSpecExists(self):
     spec = genome.Genome.get_gene_spec()
     self.assertIsNotNone(spec)
+
+  def testGeneSpecHasLinkLength(self):
+    spec = genome.Genome.get_gene_spec()
+    self.assertIsNotNone(spec['link-length'])
+
+  def testGeneSpecHasLinkLength(self):
+    spec = genome.Genome.get_gene_spec()
+    print(spec)
+    self.assertIsNotNone(spec['link-length']["ind"])
+
+  def testGeneSpecScale(self):
+    spec = genome.Genome.get_gene_spec()
+    gene = genome.Genome.get_random_gene(20)
+    self.assertGreater(gene[spec["link-length"]["ind"]], 0)
 
 unittest.main()
