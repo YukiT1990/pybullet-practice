@@ -1,6 +1,7 @@
 # 3.203 Generate a genome
 # 3.204 Genome spec
 # 3.208 Gene to graph - implementation
+# 3.211 Interpret the genome spec
 
 import numpy as np
 import copy
@@ -44,6 +45,23 @@ class Genome():
     return gene_spec
 
   @staticmethod
+  def get_gene_dict(gene, spec):
+    gdict = {}
+    for key in spec:
+      ind = spec[key]["ind"]
+      scale = spec[key]["scale"]
+      gdict[key] = gene[ind] * scale
+    return gdict
+
+  
+  @staticmethod
+  def get_genome_dicts(genome, spec):
+    gdicts = []
+    for gene in genome:
+      gdicts.append(Genome.get_gene_dict(gene, spec))
+    return gdicts
+
+  @staticmethod
   def expandLinks(parent_link, uniq_parent_name, flat_links, exp_links):
     children = [l for l in flat_links if l.parent_name == parent_link.name]
     for c in children:
@@ -55,10 +73,29 @@ class Genome():
         exp_links.append(c_copy)
         Genome.expandLinks(c, uniq_name, flat_links, exp_links)
 
+  @staticmethod
+  def genome_to_links(gdicts):
+    link_ind = 0
+    parent_names = [str(link_ind)]
+    links = []
+    for gdict in gdicts:
+      link_ind = link_ind + 1
+      link_name = str(link_ind)
+      parent_ind = gdict["joint-parent"] * len(parent_names)
+      parent_name = parent_names[int(parent_ind)]
+      recur = gdict["link-recurrance"]
+      link = URDFLink(name=link_name, 
+                      parent_name=parent_name, 
+                      recur=recur,
+                      link_length=gdict["link-length"]
+                      )
+      links.append(link)
+      parent_names.append(link_name)
+    return links
 
 
 class URDFLink():
-  def __init__(self, name, parent_name, recur):
+  def __init__(self, name, parent_name, recur, link_length=0.1):
     self.name = name
     self.parent_name = parent_name
     self.recur = recur

@@ -1,6 +1,7 @@
 # 3.203 Generate a genome
 # 3.204 Genome spec
 # 3.208 Gene to graph - implementation
+# 3.211 Interpret the genome spec
 
 import unittest
 import genome
@@ -74,5 +75,25 @@ class GenomeTest (unittest.TestCase):
     names = [l.name+"-parent-is-"+l.parent_name for l in exp_links]
     print(names)
     self.assertEqual(len(exp_links), 6)
+
+  def testGeneToGeneDict(self):
+    spec = genome.Genome.get_gene_spec()
+    gene = genome.Genome.get_random_gene(len(spec))
+    gene_dict = genome.Genome.get_gene_dict(gene, spec)
+    self.assertIn("link-recurrance", gene_dict)
+
+  def testGeneToDict(self):
+    spec = genome.Genome.get_gene_spec()
+    dna = genome.Genome.get_random_genome(len(spec), 3)
+    genome_dicts = genome.Genome.get_genome_dicts(dna, spec)
+    self.assertEqual(len(genome_dicts), 3)
+
+  def testGetLinks(self):
+    spec = genome.Genome.get_gene_spec()
+    dna = genome.Genome.get_random_genome(len(spec), 3)
+    genome_dicts = genome.Genome.get_genome_dicts(dna, spec)
+    links = genome.Genome.genome_to_links(genome_dicts)
+    self.assertEqual(len(links), 3)
+
 
 unittest.main()
